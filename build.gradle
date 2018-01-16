@@ -1,0 +1,10 @@
+apply plugin: 'java'
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile 'it.unibo.alchemist:alchemist:7.0.2'
+}
+

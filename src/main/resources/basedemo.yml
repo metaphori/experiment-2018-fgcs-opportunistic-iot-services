@@ -1,0 +1,20 @@
+environment:
+  type: OSMEnvironment
+  parameters: ["/vcm.pbf"]
+
+incarnation: protelis
+
+pools:
+  - pool: &move
+    - time-distribution: 0.1
+      type: Event
+      actions:
+        - type: ReproduceGPSTrace
+          parameters: ["/vcmuser.gpx", false, AlignToTime, 1365922800, false, false]
+
+displacements:
+  - in:
+      type: FromGPSTrace
+      parameters: [1497, "/vcmuser.gpx", false, AlignToTime, 1365922800, false, false]
+    programs:
+      - *move
