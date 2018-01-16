@@ -4,6 +4,15 @@ repositories {
     mavenCentral()
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs 'src/main/protelis'
+            srcDirs 'src/main/yaml'
+        }
+    }
+ }
+
 dependencies {
     compile 'it.unibo.alchemist:alchemist:7.0.2'
 }

@@ -11,6 +11,9 @@ pools:
       actions:
         - type: ReproduceGPSTrace
           parameters: ["/vcmuser.gpx", false, AlignToTime, 1365922800, false, false]
+  - pool: &crowd
+    - time-distribution: 1
+      program: crowd
 
 displacements:
   - in:
@@ -18,3 +21,4 @@ displacements:
       parameters: [1497, "/vcmuser.gpx", false, AlignToTime, 1365922800, false, false]
     programs:
       - *move
+      - *crowd
