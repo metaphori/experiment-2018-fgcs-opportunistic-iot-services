@@ -1,12 +1,19 @@
+variables:
+  moveFrequency: &moveFrequency
+    formula: 1/60
+
 environment:
   type: OSMEnvironment
-  parameters: ["/vcm.pbf"]
+  parameters: ["/vcm.pbf", false]
 
 incarnation: protelis
+network-model:
+  type: EuclideanDistance
+  parameters: [100]
 
 pools:
   - pool: &move
-    - time-distribution: 0.1
+    - time-distribution: *moveFrequency
       type: Event
       actions:
         - type: ReproduceGPSTrace
@@ -14,6 +21,7 @@ pools:
   - pool: &crowd
     - time-distribution: 1
       program: crowd
+    - program: send
 
 displacements:
   - in:
@@ -22,3 +30,18 @@ displacements:
     programs:
       - *move
       - *crowd
+    contents:
+      - molecule: human
+        concentration: true
+  - in:
+      type: Rectangle
+      parameters: [1000, 48.17, 16.3, 0.07, 0.15]
+#      parameters: [48.170653, 16.300389, 48.259498, 16.449349, 0.001, 0.001]
+    programs:
+      - *crowd
+    contents:
+      - molecule: asd
+        concentration: 0
+        
+        
+        
