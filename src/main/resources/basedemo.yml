@@ -11,13 +11,32 @@ network-model:
   type: EuclideanDistance
   parameters: [100]
 
+ReproduceGPSTrace: &ReproduceGPSTrace
+  type: ReproduceGPSTrace
+  parameters: ["/vcmuser.gpx", false, AlignToTime, 1365922800, false, false]
+
 pools:
-  - pool: &move
+  - pool: &moveWithTraces
     - time-distribution: *moveFrequency
       type: Event
       actions:
-        - type: ReproduceGPSTrace
-          parameters: ["/vcmuser.gpx", false, AlignToTime, 1365922800, false, false]
+        - *ReproduceGPSTrace
+  - pool: &move
+    - time-distribution: 0.1
+      type: Event
+      conditions:
+        - type: MoleculeHasConcentration
+          parameters: [crowd, false]
+      actions:
+        - *ReproduceGPSTrace
+    - time-distribution: 0.1
+      type: Event
+      conditions:
+        - type: MoleculeHasConcentration
+          parameters: [crowd, true]
+      actions:
+        - type: TargetWalker
+          parameters: [goto, none]
   - pool: &crowd
     - time-distribution: 1
       program: crowd
@@ -36,12 +55,10 @@ displacements:
   - in:
       type: Rectangle
       parameters: [1000, 48.17, 16.3, 0.07, 0.15]
-#      parameters: [48.170653, 16.300389, 48.259498, 16.449349, 0.001, 0.001]
     programs:
       - *crowd
     contents:
-      - molecule: asd
-        concentration: 0
+      
         
         
         
