@@ -82,11 +82,6 @@ def warning(radius, crowding) {
 //countNearby(1000)
 //densityEstimation(0.005, 60, 0.25)
 //dangerousDensity(0.005, 30, 2.17, 300, 0.25)
-/*
- * TODO: propagare segnale nell'intorno della gente in warning
- * attivare lo switch del comportamento in caso si riceva il segnale
- * mettere i parametri da misurare
- */
 let crowding = crowdTracking(0.005, 30, 0.25, 1.08, 2.17, 300, 60);
 let warn = warning(50, crowding);
 let goto = direction(50, crowding);
