@@ -171,21 +171,22 @@ public class YamlLoader implements Loader {
                 throw new IllegalAlchemistYAMLException("Invalid named " + EXPORT + ' ' + name);
             });
     private static final Map<Class<?>, String> PACKAGE_ROOTS = ImmutableMap.<Class<?>, String>builder()
-            .put(Variable.class, ALCHEMIST_PACKAGE_ROOT + "loader.variables.")
+            .put(Action.class, MODEL_PACKAGE_ROOT + "actions.")
+            .put(Concentration.class, MODEL_PACKAGE_ROOT + "concentrations.")
+            .put(Condition.class, MODEL_PACKAGE_ROOT + "conditions.")
             .put(DependentVariable.class, ALCHEMIST_PACKAGE_ROOT + "loader.variables.")
-            .put(Environment.class, MODEL_PACKAGE_ROOT + "environments.")
-            .put(FilteringPolicy.class, ALCHEMIST_PACKAGE_ROOT + "loader.export.filters")
-            .put(Layer.class, MODEL_PACKAGE_ROOT + "layers.")
             .put(Displacement.class, ALCHEMIST_PACKAGE_ROOT + "loader.displacements.")
-            .put(Shape.class, ALCHEMIST_PACKAGE_ROOT + "loader.shapes.")
+            .put(Environment.class, MODEL_PACKAGE_ROOT + "environments.")
+            .put(Extractor.class, ALCHEMIST_PACKAGE_ROOT + "loader.export.")
+            .put(FilteringPolicy.class, ALCHEMIST_PACKAGE_ROOT + "loader.export.filters.")
+            .put(Layer.class, MODEL_PACKAGE_ROOT + "layers.")
             .put(LinkingRule.class, MODEL_PACKAGE_ROOT + "linkingrules.")
+            .put(Molecule.class, MODEL_PACKAGE_ROOT + "molecules.")
             .put(Node.class, MODEL_PACKAGE_ROOT + "nodes.")
             .put(Reaction.class, MODEL_PACKAGE_ROOT + "reactions.")
-            .put(Condition.class, MODEL_PACKAGE_ROOT + "conditions.")
-            .put(Action.class, MODEL_PACKAGE_ROOT + "actions.")
+            .put(Shape.class, ALCHEMIST_PACKAGE_ROOT + "loader.shapes.")
             .put(TimeDistribution.class, MODEL_PACKAGE_ROOT + "timedistributions.")
-            .put(Molecule.class, MODEL_PACKAGE_ROOT + "molecules.")
-            .put(Concentration.class, MODEL_PACKAGE_ROOT + "concentrations.")
+            .put(Variable.class, ALCHEMIST_PACKAGE_ROOT + "loader.variables.")
             .build();
     private final ImmutableMap<String, Object> constants;
     private final ImmutableMap<String, Object> contents;
@@ -624,6 +625,7 @@ public class YamlLoader implements Loader {
         factory.registerImplicit(Number.class, CharSequence.class, Number::toString);
         factory.registerImplicit(double.class, Time.class, DoubleTime::new);
         factory.registerImplicit(List.class, Number[].class, l -> ((List<?>) l).stream().map(e -> factory.convertOrFail(Number.class, e)).toArray(Number[]::new));
+        factory.registerImplicit(CharSequence.class, FilteringPolicy.class, s -> CommonFilters.fromString(s.toString()));
         return factory;
     }
 
