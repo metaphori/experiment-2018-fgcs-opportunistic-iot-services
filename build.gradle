@@ -34,3 +34,36 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-reflect"
 }
 
+task runTests {
+    println "Done."
+}
+import org.apache.tools.ant.taskdefs.condition.Os
+void makeTest(file, sampling, time, vars) {
+    def maxHeap = 14
+    if (System.properties['os.name'].toLowerCase().contains('linux')) {
+        new ByteArrayOutputStream().withStream { os ->
+            def result = exec {
+                executable "bash"
+                args "-c", "cat /proc/meminfo | grep MemTotal | grep -o '[0-9]*'"
+                standardOutput = os
+            }
+            maxHeap = os.toString().toInteger() / 1024 / 1024 - 1 as int
+        }
+    }
+    task "run$file"(type: JavaExec){
+        classpath = sourceSets.main.runtimeClasspath
+        classpath 'src/main/protelis'
+        main = 'it.unibo.alchemist.Alchemist'
+        maxHeapSize = "${maxHeap}g"
+        //              jvmArgs '-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044'
+        args("-y", "src/main/resources/${file}.yml",
+        "-t", "$time",
+        "-b", "-var", *vars,
+        "-e", "data/${file}",
+        "-i", "$sampling")
+    }
+    runTests.dependsOn("run$file")
+}
+
+makeTest("vienna", 5, 5 * 3600, ["seed", "pFollows"])
+defaultTasks('runTests')
