@@ -1,19 +1,60 @@
 variables:
   moveFrequency: &moveFrequency
     formula: 1/60
+  pFollows: &pFollows
+    min: 0
+    max: 1
+    step: 0.1
+    default: 0.5
+  seed: &seed
+    min: 0
+    max: 10
+    step: 1
+    default: 0
+
+incarnation: protelis
 
 environment:
   type: OSMEnvironment
   parameters: ["/vcm.pbf", false]
 
-incarnation: protelis
 network-model:
   type: EuclideanDistance
   parameters: [100]
 
+seeds:
+  simulation: *seed
+  scenario: *seed
+
 ReproduceGPSTrace: &ReproduceGPSTrace
   type: ReproduceGPSTrace
   parameters: ["/vcmuser.gpx", false, AlignToTime, 1365922800, false, false]
+
+export:
+  - time
+  - molecule: follows-advice
+    aggregators: [sum]
+  - molecule: overcrowded
+    aggregators: [sum]
+    value-filter: onlyfinite
+  - molecule: risk
+    aggregators: [sum]
+    value-filter: onlyfinite
+  - molecule: warning
+    aggregators: [sum]
+    value-filter: onlyfinite
+  - molecule: direction
+    aggregators: [sum]
+    value-filter: onlyfinite
+  - molecule: crowd
+    aggregators: [sum]
+    value-filter: onlyfinite
+  - type: CurrentSpeed
+    parameters: [onlyfinite, [sum]]
+  - type: DistanceTraveled
+    parameters: [onlyfinite, [sum]]
+  - type: OverallDistanceTraveled
+    parameters: [onlyfinite, [sum]]
 
 pools:
   - pool: &moveWithTraces
@@ -26,14 +67,14 @@ pools:
       type: Event
       conditions:
         - type: MoleculeHasConcentration
-          parameters: [crowd, false]
+          parameters: [following, false]
       actions:
         - *ReproduceGPSTrace
     - time-distribution: 0.1
       type: Event
       conditions:
         - type: MoleculeHasConcentration
-          parameters: [crowd, true]
+          parameters: [following, true]
       actions:
         - type: TargetWalker
           parameters: [goto, none]
@@ -52,13 +93,14 @@ displacements:
     contents:
       - molecule: human
         concentration: true
+      - molecule: pFollows
+        concentration: *pFollows
+      - molecule: follows-advice
+        concentration: self.nextRandomDouble()
   - in:
       type: Rectangle
       parameters: [1000, 48.17, 16.3, 0.07, 0.15]
     programs:
       - *crowd
-    contents:
-      
-        
         
         
