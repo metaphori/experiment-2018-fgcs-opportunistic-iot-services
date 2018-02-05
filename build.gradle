@@ -47,7 +47,7 @@ void makeTest(file, sampling, time, vars) {
                 args "-c", "cat /proc/meminfo | grep MemTotal | grep -o '[0-9]*'"
                 standardOutput = os
             }
-            maxHeap = os.toString().toInteger() / 1024 / 1024 - 1 as int
+            maxHeap = os.toString().toInteger() / 1024 / 1024 - 4 as int
         }
     }
     task "run$file"(type: JavaExec){
@@ -59,11 +59,12 @@ void makeTest(file, sampling, time, vars) {
         args("-y", "src/main/resources/${file}.yml",
         "-t", "$time",
         "-b", "-var", *vars,
+//        "-p", "5",
         "-e", "data/${file}",
         "-i", "$sampling")
     }
     runTests.dependsOn("run$file")
 }
 
-makeTest("vienna", 5, 5 * 3600, ["seed", "pFollows"])
+makeTest("vienna", 5, 2 * 3600, ["seed", "pFollows"])
 defaultTasks('runTests')
