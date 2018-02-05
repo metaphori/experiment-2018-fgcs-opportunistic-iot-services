@@ -47,7 +47,7 @@ void makeTest(file, sampling, time, vars) {
                 args "-c", "cat /proc/meminfo | grep MemTotal | grep -o '[0-9]*'"
                 standardOutput = os
             }
-            maxHeap = os.toString().toInteger() / 1024 / 1024 - 4 as int
+            maxHeap = os.toString().toInteger() / 1024 / 1024 - 2 as int
         }
     }
     task "run$file"(type: JavaExec){
