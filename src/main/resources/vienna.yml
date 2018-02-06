@@ -32,7 +32,7 @@ ReproduceGPSTrace: &ReproduceGPSTrace
 
 export:
   - time
-  - molecule: follows-advice
+  - molecule: following
     aggregators: [sum]
     value-filter: onlyfinite
   - molecule: overcrowded
