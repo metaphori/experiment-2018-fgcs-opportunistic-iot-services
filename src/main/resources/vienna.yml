@@ -5,7 +5,7 @@ variables:
     min: 0
     max: 1
     step: 0.1
-    default: 0.5
+    default: 1
   seed: &seed
     min: 0
     max: 10
@@ -34,6 +34,7 @@ export:
   - time
   - molecule: follows-advice
     aggregators: [sum]
+    value-filter: onlyfinite
   - molecule: overcrowded
     aggregators: [sum]
     value-filter: onlyfinite
