@@ -2,3 +2,5 @@ bin/
 /.gradle/
 hs_err_pid*
 build/
+data/partial/
+data/flawed/
