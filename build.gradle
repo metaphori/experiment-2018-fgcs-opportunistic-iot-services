@@ -50,7 +50,7 @@ void makeTest(file, sampling, time, vars) {
             maxHeap = os.toString().toInteger() / 1024 - 2 * 1024 as int
         }
     }
-    def threads = Math.min(Runtime.getRuntime().availableProcessors(), maxHeap / 1.9 / 1024 as int)
+    def threads = Math.min(Runtime.getRuntime().availableProcessors(), maxHeap / 2 / 1024 as int)
     println("Running on $threads threads")
     task "run$file"(type: JavaExec){
         classpath = sourceSets.main.runtimeClasspath
