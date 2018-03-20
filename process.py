@@ -239,9 +239,9 @@ if __name__ == '__main__':
             '@following[Sum]': 'Users being steered',
             '@overcrowded[Sum]': 'Users in dangerous areas',
             '@risk[Sum]': 'Users in moderate risk areas',
-            '@warning[Sum]': 'Users in warning zone',
+            '@warning[Sum]': 'Users warned by the application',
             '@direction[Sum]': 'Users receiving steering information',
-            '@crowd[Sum]': 'Users receiving the warning alert',
+            '@crowd[Sum]': 'Users receiving a warning alert with steering information',
             'CurrentSpeed[Sum]': 'Mean walking speed',
             'DistanceTraveled[Sum]': 'Mean walked distance',
             'OverallDistanceTraveled[Sum]': 'Mean total walked distance'
