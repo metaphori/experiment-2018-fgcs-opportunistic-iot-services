@@ -15,7 +15,6 @@ def countNearby(range) {
 }
 
 def densityEstimation(p, range, w) {
-//	env.put("count", countNearby(range));
 	countNearby(range) / (p * pi * range ^ 2 * w)
 }
 
@@ -24,17 +23,10 @@ def dangerousDensity(p, range, dangerousDensity, groupSize, w) {
 	let localDensity = densityEstimation(p, range, w);
 	let avg = summarize(partition, sum, localDensity, 0) / summarize(partition, sum, 1, 0);
 	let count = summarize(partition, sum, 1 / p, 0);
-//	env.put("density", localDensity);
-//	env.put("sum", count);
-//	env.put("partition", broadcast(partition, self.getDeviceUID().getId()));
-//	env.put("average", avg);
 	avg > dangerousDensity && count > groupSize
 }
 
 def crowdTracking(p, range, w, crowdedDensity, dangerousThreshold, groupSize, timeFrame) {
-	/*
-	 * TODO: compute the density only once
-	 */
 	if (isRecentEvent(densityEstimation(p, range, w) > crowdedDensity, timeFrame)) {
 		if (dangerousDensity(p, range, dangerousThreshold, groupSize, w)) {
 			overcrowded()
